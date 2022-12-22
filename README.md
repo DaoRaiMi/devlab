@@ -20,8 +20,8 @@ yarn add babel-plugin-import
 ```
 
 ### 创建craco配置文件
-```
-touch craco.config.js
+```javascript
+// touch craco.config.js
 module.exports = {
     babel:{
         plugins:[
@@ -33,7 +33,7 @@ module.exports = {
 ```
 
 ### 修改package.json中scripts段配置
-```
+```javascript
   "scripts": {
     "start": "craco start", // 之前是 react-scripts start
     "build": "craco build",
@@ -51,7 +51,7 @@ yarn add craco-less
 
 ### 修改craco的配置文件
 // 在module.exports中添加如下两行：
-```
+```javascript
 const CracoLessPlugin = require('craco-less');
 
 plugins: [ 

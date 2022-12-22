@@ -1,10 +1,34 @@
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Checkbox, Form, Input, message } from 'antd';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { Navigate, useNavigate } from 'react-router-dom';
+
+import {reqLogin} from "../../api/user"
+import memoryUtil from "../../utils/memory"
+import storeUtil from "../../utils/store"
 import "./index.less"
 
+
+
 export default function Login() {
-    const onFinish = value =>{
-        console.log(value);
+    const navigate = useNavigate()
+
+    let user = memoryUtil.user
+    if (user&& user.username ) {
+        return <Navigate to="/" replace/>
+    }
+
+    const onFinish = async value =>{
+        const {username,password} = value
+        let resp = await reqLogin(username,password)
+        if (resp.code === 200) {
+            message.success("login succeed")
+            // 将用户的token保存到内存和localstore中。
+            memoryUtil.user = {username:"admin", token:resp.token}
+            storeUtil.saveUser({username:"admin", token:resp.token})
+            navigate("/")
+        }else {
+            message.error("login failed")
+        }
     }
 
     return (
@@ -50,7 +74,7 @@ export default function Login() {
                         <Checkbox>Remember me</Checkbox>
                         
                     </Form.Item>
-                    <a className="login-form-forgot" href="#">
+                    <a className="login-form-forgot" href="/todo">
                         Forgot password
                     </a>
                 </Form.Item>
@@ -58,7 +82,7 @@ export default function Login() {
 
                 <Form.Item>
                     <Button type='primary' htmlType='submit' className="login-form-button">Login</Button>
-                    Or <a href="">register now!</a>
+                    Or <a href="/todo">register now!</a>
                 </Form.Item>
                 
             </Form>

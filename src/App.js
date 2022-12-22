@@ -1,16 +1,13 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Login from './pages/login'
-import Admin from './pages/admin'
-import NotFound from './pages/notfound'
+import { Fragment } from 'react';
+import { useRoutes } from 'react-router-dom';
+import routes from './routes';
 
 function App() {
+  const routeElements = useRoutes(routes)
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<Admin/>} errorElement={<NotFound/>}/>
-        <Route path='/login' element={<Login/>} />
-      </Routes>
-    </BrowserRouter>    
+    <Fragment>
+      {routeElements}
+    </Fragment>
   );
 }
 
